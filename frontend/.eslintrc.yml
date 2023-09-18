@@ -34,3 +34,4 @@ rules:
   no-undef: 0
   functional/no-return-void: off
   functional/no-conditional-statements: off
+  arrow-body-style": off
