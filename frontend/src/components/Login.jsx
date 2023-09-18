@@ -3,12 +3,17 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import loginImg from '../imgs/login.jpeg';
+import { loginSchema } from '../schema';
 
 const Login = () => {
   const { t } = useTranslation();
 
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   useEffect(() => {
     if (authFailed) {
@@ -21,15 +26,12 @@ const Login = () => {
       username: '',
       password: '',
     },
-    validationSchema: yup.object().shape({
-      username: yup.string().min(3).max(20).required('Пожалуйста, введите имя пользователя'),
-      password: yup.string().min(6).max(20).required('Пожалуйста, введите пароль'),
-    }),
     onSubmit: (values) => {
-      console.log('Form submitted with values:', values);
+      console.log(JSON.stringify(values, null, 2));
       setAuthFailed(true);
       formik.setSubmitting(false);
     },
+    validationSchema: loginSchema,
   });
 
   return (

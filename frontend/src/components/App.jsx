@@ -6,7 +6,7 @@ const App = () => (
   <BrowserRouter>
     <Routes>
       <Route index element={<h1>Index Page </h1>} />
-      <Route path="login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </BrowserRouter>
