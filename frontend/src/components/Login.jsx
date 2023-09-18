@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import loginImg from '../imgs/login.jpeg';
-import { loginSchema } from '../schema';
+import { loginSchema } from '../schemas';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -49,7 +49,7 @@ const Login = () => {
                   <Form.Group className="form-floating mb-3">
                     <Form.Control
                       name="username"
-                      autocomplete="username"
+                      autoComplete="username"
                       required
                       id="username"
                       placeholder={t('username')}
@@ -63,14 +63,14 @@ const Login = () => {
                   <Form.Group className="form-floating mb-3">
                     <Form.Control
                       name="password"
-                      autocomplete="current-password"
+                      autoComplete="current-password"
                       required
                       placeholder={t('password')}
                       type="password"
                       id="password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
-                      isInvalid={submissionFailed || formik.errors.password}
+                      isInvalid={authFailed || formik.errors.password}
                     />
                     <Form.Label htmlFor="password">{t('password')}</Form.Label>
                     <Form.Control.Feedback type="invalid">{t('submissionFailed')}</Form.Control.Feedback>
