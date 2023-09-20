@@ -2,11 +2,15 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 import loginImg from '../imgs/login.jpeg';
 import { loginSchema } from '../schemas';
 
 const Login = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
@@ -26,10 +30,27 @@ const Login = () => {
       username: '',
       password: '',
     },
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-      setAuthFailed(true);
-      formik.setSubmitting(false);
+    onSubmit: async ({ username, password }) => {
+      try {
+        const response = await axios.post('/api/v1/login', { username, password }); // Отправка данных на сервер для авторизации
+        auth.logIn(response.data.token, username);
+        // Перенаправление на страницу с чатом или другую страницу
+        if (location.state && location.state.from) {
+          navigate(location.state.from.pathname);
+        } else {
+          navigate('/');
+        }
+      } catch (error) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          inputRef.current.select();
+          formik.errors.username = ' ';
+          formik.errors.password = 'Неверные имя пользователя или пароль';
+          setAuthFailed(true);
+          return;
+        }
+        throw error;
+      }
     },
     validationSchema: loginSchema,
   });
