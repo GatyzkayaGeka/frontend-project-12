@@ -1,16 +1,22 @@
-import React, { useRef, useEffect, useState } from 'react';
+// import { useNavigate, useLocation } from 'react-router-dom';
+import React, {
+  useRef, useEffect, useState, useContext,
+} from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import loginImg from '../imgs/login.jpeg';
 import { loginSchema } from '../schemas';
+import { AuthContext } from './AuthProvider'; // Импортируем AuthContext
 
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
+  // const history = useHistory(); // Использовать useHistory для редиректа
+  const auth = useContext(AuthContext); // Получить контекст аутентификации
 
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
@@ -30,19 +36,24 @@ const Login = () => {
       username: '',
       password: '',
     },
+    validationSchema: loginSchema,
     onSubmit: async ({ username, password }) => {
       try {
         const response = await axios.post('/api/v1/login', { username, password }); // Отправка данных на сервер для авторизации
-        auth.logIn(response.data.token, username);
         // Перенаправление на страницу с чатом или другую страницу
-        if (location.state && location.state.from) {
-          navigate(location.state.from.pathname);
+        if (response.status === 200) {
+          const { token } = response.data;
+          localStorage.setItem('token', token);
+          // Редирект на страницу с чатом
+          auth.logIn(token); // Используйте метод logIn из контекста аутентификации
+          navigate('/'); // Используем navigate для перенаправления
         } else {
-          navigate('/');
+          // Обработка других статусов, если это не 200
+          throw new Error('Ошибка авторизации');
         }
       } catch (error) {
         formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
+        if (error.isAxiosError && error.response.status === 401) {
           inputRef.current.select();
           formik.errors.username = ' ';
           formik.errors.password = 'Неверные имя пользователя или пароль';
@@ -52,7 +63,6 @@ const Login = () => {
         throw error;
       }
     },
-    validationSchema: loginSchema,
   });
 
   return (

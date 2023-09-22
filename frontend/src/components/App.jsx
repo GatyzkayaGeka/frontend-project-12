@@ -4,6 +4,7 @@ import React from 'react';
 import NotFound from './NotFound';
 import Login from './Login';
 import Chat from './Chat';
+import AuthProvider from './AuthProvider';
 
 // eslint-disable-next-line arrow-body-style, padded-blocks
 const App = () => {
@@ -15,13 +16,15 @@ const App = () => {
           <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
           </nav>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Chat />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+          <AuthProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Chat />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </AuthProvider>
         </div>
         <div className="Toastify" />
       </div>
