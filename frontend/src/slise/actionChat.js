@@ -1,4 +1,4 @@
-import { setChannels, setMessages } from './channelsSlice';
+// import { setChannels, setMessages } from './channelsSlice';
 
 const fetchChannelsAndMessages = (token) => async (dispatch) => {
   try {

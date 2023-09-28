@@ -4,7 +4,7 @@ import axios from 'axios';
 import rout from '../rout';
 
 // Создаем асинхронное действие с помощью createAsyncThunk
-const FetchData = createAsyncThunk('data/fetchData', async (authHeader) => {
+const fetchData = createAsyncThunk('data/fetchData', async (authHeader) => {
   // eslint-disable-next-line no-useless-catch
   try {
     const response = await axios.get(rout.getData(), {
@@ -19,4 +19,4 @@ const FetchData = createAsyncThunk('data/fetchData', async (authHeader) => {
   }
 });
 
-export default FetchData;
+export default fetchData;
