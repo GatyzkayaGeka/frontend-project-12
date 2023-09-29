@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
-// import { AuthContext } from './AuthProvider';
 import { useDispatch } from 'react-redux';
 import fetchData from './fetchData';
 import Channels from './Channels';
@@ -14,7 +13,6 @@ const Chat = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
   // const token = localStorage.getItem('token');
-  // const { t } = useTranslation();
   const authHeader = auth.getAuthHeader();
 
   useEffect(() => {

@@ -9,19 +9,19 @@ const initialState = {
 const messageSlice = createSlice({
   name: 'message',
   initialState,
-  reducers: {},
+  reducers: {
   //   setMessages(state, { payload }) {
   //     state.messages = payload;
   //   },
-  //   addMessage(state, { payload }) {
-  //     state.messages.push(payload);
-  //   },
-  // },
+    addMessage(state, { payload }) {
+      state.messages.push(payload);
+    },
+  },
   extraReducers: (builder) => builder.addCase(fetchData.fulfilled, (state, action) => {
     state.messages = action.payload.messages;
     // state.currentChannelId = action.payload.currentChannelId;
   }),
 });
 
-// export const { setMessages, addMessage } = messageSlice.actions;
+export const { addMessage } = messageSlice.actions;
 export default messageSlice.reducer;

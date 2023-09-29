@@ -1,23 +1,22 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { actions as chatSlice } from '../../slise/channelsSlice';
 import { Button } from 'react-bootstrap';
-// import { setChannelId } from '../slise/channelsSlice';
+import { setChannels } from '../slise/channelsSlice';
 import AddingChannel from './AddingChannel';
 
 const Channels = () => {
   const { t } = useTranslation();
 
-  const { channels, channelId } = useSelector((state) => state.channels);
+  const { channels, actualChannelId } = useSelector((state) => state.channels);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const channels = useSelector((state) => state.channelsReducer.channels);
   // const channelId = useSelector((state) => state.channelsReducer.channelId);
 
-  // const getChannelId = (id) => {
-  //   dispatch(chatSlice.setChannelId(id)); // Используем setChannelId из actions
-  // };
+  const getChannelId = (id) => {
+    dispatch(setChannels(id)); // Используем setChannelId из actions
+  };
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -32,8 +31,9 @@ const Channels = () => {
         {channels.map(({ id, name }) => (
           <li className="nav-item w-100" key={id}>
             <Button
-              variant={id === channelId ? 'secondary' : ''}
+              variant={id === actualChannelId ? 'secondary' : ''}
               className="w-100 rounded-0 text-start"
+              onClick={() => getChannelId(id)}
             >
               <span className="me-1">#</span>
               {name}

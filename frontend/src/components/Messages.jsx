@@ -1,27 +1,21 @@
 import { useSelector } from 'react-redux';
 // import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-// import { io } from 'socket.io-client';
 // import { addMessage } from '../slise/messagesSlice'; // Импортируем addMessage
-// import slice from '../slise/index';
 import FormMes from './FormMes';
-
-// onst socket = io();
-// socket.on('newMessage', (payload) => {
-//   slice.dispatch(messageActions.addMessage(payload));
-// });
 
 // eslint-disable-next-line arrow-body-style
 const Messages = () => {
   const { t } = useTranslation();
   // const dispatch = useDispatch();
 
-  const { messages } = useSelector((state) => state.messages);
-  const { currentChannelName } = useSelector((state) => state.channels);
+  const { channels, actualChannelId } = useSelector((state) => state.channels);
+  const currentChannelName = channels.find(({ id }) => id === actualChannelId);
   // const channels = useSelector((state) => state.chatReducer.channels);
-  // const channelsId = useSelector((state) => state.chatReducer.channelId);
-  // const messages = useSelector((state) => state.messagesReducer.messages);
-
+  // const actualChannelId = useSelector((state) => state.chatReducer.actualChannelId);
+  const messages = useSelector((state) => state.messages)
+    .messages
+    .filter(({ channelId }) => channelId === actualChannelId);
   // useEffect(() => {
   //   socket.on('newMessage', (payload) => {
   //     dispatch(addMessage(payload)); // Используем addMessage из actions

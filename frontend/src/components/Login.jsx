@@ -8,7 +8,7 @@ import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import loginImg from '../imgs/login.jpeg';
-import loginSchema from '../schemas';
+import { loginSchema } from '../schemas';
 import useAuth from '../locales/useAuth'; // Импортируем useAuth
 import rout from '../rout';
 

@@ -3,27 +3,26 @@ import fetchData from '../components/fetchData';
 
 const initialState = {
   channels: [],
-  channelId: 1,
-  currentChannelName: 'general',
+  actualChannelId: 1,
 };
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
-  reducers: {},
-  //   setChannels: (state, { payload }) => {
-  //     state.channels = payload;
+  reducers: {
+    setChannels: (state, { payload }) => {
+      state.actualChannelId = payload;
+    },
+  //   setactualChannelId(state, { payload }) {
+  //     state.actualChannelId = payload;
   //   },
-  //   setChannelId(state, { payload }) {
-  //     state.channelId = payload;
-  //   },
-  // },
+  },
   extraReducers: (builder) => builder
     .addCase(fetchData.fulfilled, (state, action) => {
       state.channels = action.payload.channels;
-      state.channelId = action.payload.channelId;
+      state.actualChannelId = action.payload.actualChannelId;
     }),
 });
 
-//  export const { setChannels, setChannelId } = chatSlice.actions;
+export const { setChannels } = chatSlice.actions;
 export default chatSlice.reducer;
