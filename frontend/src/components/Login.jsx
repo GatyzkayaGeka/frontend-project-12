@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import loginImg from '../imgs/login.jpeg';
 import { loginSchema } from '../schemas';
 import useAuth from '../locales/useAuth'; // Импортируем useAuth
-import rout from '../rout';
+import rout from '../route';
 
 const Login = () => {
   const { t } = useTranslation();

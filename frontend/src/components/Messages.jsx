@@ -1,26 +1,26 @@
 import { useSelector } from 'react-redux';
-// import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-// import { addMessage } from '../slise/messagesSlice'; // Импортируем addMessage
+import React from 'react';
+// import { useTranslation } from 'react-i18next';
+import { io } from 'socket.io-client';
+import { actions as messageActions } from '../slise/messagesSlice'; // Импортируем
+import slices from '../slise/index';
 import FormMes from './FormMes';
+
+const socket = io();
+socket.on('newMessage', (payload) => {
+  // console.log(payload);
+  slices.dispatch(messageActions.addMessage(payload));
+});
 
 // eslint-disable-next-line arrow-body-style
 const Messages = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   // const dispatch = useDispatch();
-
-  const { channels, actualChannelId } = useSelector((state) => state.channels);
-  const currentChannelName = channels.find(({ id }) => id === actualChannelId);
-  // const channels = useSelector((state) => state.chatReducer.channels);
-  // const actualChannelId = useSelector((state) => state.chatReducer.actualChannelId);
-  const messages = useSelector((state) => state.messages)
-    .messages
-    .filter(({ channelId }) => channelId === actualChannelId);
-  // useEffect(() => {
-  //   socket.on('newMessage', (payload) => {
-  //     dispatch(addMessage(payload)); // Используем addMessage из actions
-  //   });
-  // }, [dispatch]);
+  // const currentChannelName = channels.find(({ id }) => id === currentChannelId);
+  const channels = useSelector((state) => state.chatReducer.channels);
+  const channelsId = useSelector((state) => state.chatReducer.channelId);
+  const messages = useSelector((state) => state.messageReducer.message);
+  // const [message, setMessage] = useState('');
 
   // const sendMessage = (e) => {
   //   e.preventDefault();
@@ -32,48 +32,57 @@ const Messages = () => {
   //   setMessage('');
   // };
 
-  // const numberOfMessages = (number) => {
-  //   number %= 100;
-  //   if (number >= 5 && number <= 20) {
-  //     return 'сообщений';
-  //   }
-  //   number %= 10;
-  //   if (number === 1) {
-  //     return 'сообщение';
-  //   }
-  //   if (number >= 2 && number <= 4) {
-  //     return 'сообщения';
-  //   }
-  //   return 'сообщений';
-  // };
+  const activChannelName = (channels1) => {
+    const filter = channels1.filter((channel) => channel.id === channelsId).map((i) => i.name);
+    return filter[0];
+  };
 
-  // const outputMessage = messages.map((mes) => {
-  //   const { body, username, id } = mes;
-  //   return (
-  //     <div className="text-break mb-2" key={id}>
-  //       <b>{username}</b>
-  //       :
-  //       {body}
-  //     </div>
-  //   );
-  // });
+  const numberOfMessages = (number) => {
+    number %= 100;
+    if (number >= 5 && number <= 20) {
+      return 'сообщений';
+    }
+    number %= 10;
+    if (number === 1) {
+      return 'сообщение';
+    }
+    if (number >= 2 && number <= 4) {
+      return 'сообщения';
+    }
+    return 'сообщений';
+  };
+
+  const outputMessage = messages.map((mes) => {
+    const { body, username, id } = mes;
+    return (
+      <div className="text-break mb-2" key={id}>
+        <b>{username}</b>
+        :
+        {body}
+      </div>
+    );
+  });
 
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0"><b>{`# ${currentChannelName}`}</b></p>
+          <p className="m-0">
+            <b>
+              #
+              {' '}
+              {activChannelName(channels)}
+              {' '}
+            </b>
+          </p>
           <span className="text-muted">
-            {t('messagesCounter.messages', { count: messages.length })}
+            {messages.length}
+            {' '}
+            {numberOfMessages((messages.length))}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-          {messages.map(({ message, user, id }) => (
-            <div className="text-break mb-2" key={id}>
-              <b>{user}</b>
-              {`: ${message}`}
-            </div>
-          ))}
+          {outputMessage}
         </div>
         <div className="mt-auto px-5 py-3">
           <FormMes />

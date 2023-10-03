@@ -1,45 +1,48 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'react-bootstrap';
-import { setChannels } from '../slise/channelsSlice';
+// import { Button } from 'react-bootstrap';
+import { actions as chatActions } from '../slise/channelsSlice';
 import AddingChannel from './AddingChannel';
 
 const Channels = () => {
   const { t } = useTranslation();
-
-  const { channels, actualChannelId } = useSelector((state) => state.channels);
-
+  const channels = useSelector((state) => state.channelReduser.channels);
+  const channelId = useSelector((state) => state.channelReduser.channelId);
   const dispatch = useDispatch();
-  // const channels = useSelector((state) => state.channelsReducer.channels);
-  // const channelId = useSelector((state) => state.channelsReducer.channelId);
 
   const getChannelId = (id) => {
-    dispatch(setChannels(id)); // Используем setChannelId из actions
+    dispatch(chatActions.setChannelId(id)); // Используем  из actions
   };
 
   return (
-    <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-      <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+    <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
+      <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
         <span>{t('channels')}</span>
-        <Button variant="" className="p-0 text-primary btn-group-vertical">
+        <button
+          type="button"
+          className="p-0 text-primary btn btn-group-vertical"
+        >
           <AddingChannel />
           <span className="visually-hidden">+</span>
-        </Button>
+        </button>
       </div>
-      <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-        {channels.map(({ id, name }) => (
-          <li className="nav-item w-100" key={id}>
-            <Button
-              variant={id === actualChannelId ? 'secondary' : ''}
-              className="w-100 rounded-0 text-start"
-              onClick={() => getChannelId(id)}
-            >
-              <span className="me-1">#</span>
-              {name}
-            </Button>
-          </li>
-        ))}
+      <ul className="nav flex-column nav-pills nav-fill px-2">
+        {channels.map((channel) => {
+          const { name, id } = channel;
+          return (
+            <li className="nav-item w-100" key={id}>
+              <button
+                type="button"
+                className={id === channelId ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+                onClick={() => getChannelId(id)}
+              >
+                <span className="me-1">#</span>
+                {name}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
