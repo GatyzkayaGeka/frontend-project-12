@@ -1,6 +1,6 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import { useSelector } from 'react-redux';
 import React from 'react';
-// import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import { actions as messageActions } from '../slise/messagesSlice'; // Импортируем
 import slices from '../slise/index';
@@ -8,31 +8,20 @@ import FormMes from './FormMes';
 
 const socket = io();
 socket.on('newMessage', (payload) => {
-  // console.log(payload);
   slices.dispatch(messageActions.addMessage(payload));
 });
 
 // eslint-disable-next-line arrow-body-style
 const Messages = () => {
+  const channels = useSelector((state) => state.channelsReducer.channels);
+  const channelsId = useSelector((state) => state.channelsReducer.channelId);
+  const messages = useSelector((state) => state.messageReducer.message);
+
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const currentChannelName = channels.find(({ id }) => id === currentChannelId);
-  const channels = useSelector((state) => state.chatReducer.channels);
-  const channelsId = useSelector((state) => state.chatReducer.channelId);
-  const messages = useSelector((state) => state.messageReducer.message);
-  // const [message, setMessage] = useState('');
 
-  // const sendMessage = (e) => {
-  //   e.preventDefault();
-  //   socket.emit('newMessage', {
-  //     body: message,
-  //     channelId: channelsId,
-  //     username: JSON.parse(localStorage.getItem('userInfo')).username,
-  //   });
-  //   setMessage('');
-  // };
-
-  const activChannelName = (channels1) => {
+  const activChannelId = (channels1) => { // отображаем айди канала
     const filter = channels1.filter((channel) => channel.id === channelsId).map((i) => i.name);
     return filter[0];
   };
@@ -51,8 +40,10 @@ const Messages = () => {
     }
     return 'сообщений';
   };
+  // отбираем сообщения по канала
+  const chennaMessage = messages.filter((mes) => mes.channelId === channelsId);
 
-  const outputMessage = messages.map((mes) => {
+  const outputMessage = chennaMessage.map((mes) => {
     const { body, username, id } = mes;
     return (
       <div className="text-break mb-2" key={id}>
@@ -68,17 +59,10 @@ const Messages = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b>
-              #
-              {' '}
-              {activChannelName(channels)}
-              {' '}
-            </b>
+            <b># {activChannelId(channels)} </b>
           </p>
           <span className="text-muted">
-            {messages.length}
-            {' '}
-            {numberOfMessages((messages.length))}
+            {chennaMessage.length} {numberOfMessages((chennaMessage.length))}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">

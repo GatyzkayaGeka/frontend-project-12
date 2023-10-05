@@ -1,13 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef } from 'react';
-// import { Form, Button } from 'react-bootstrap';
-// import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-// import AddingChannel from './AddingChannel';
-// import { messageSchema } from '../schemas';
-// import { actions as messageActions } from '../slise/messagesSlice';
-// import useAuth from '../locales/useAuth';
-// import useSocket from '../locales/useSocket';
 
 const FormMes = () => {
   const { t } = useTranslation();
@@ -27,7 +20,7 @@ const FormMes = () => {
   useEffect(() => {
     // eslint-disable-next-line no-shadow
     socket.on('newMessage', (message) => {
-      dispatch(addMessage(message));
+      dispatch(message(message));
     });
 
     return () => {
@@ -50,7 +43,7 @@ const FormMes = () => {
 
   // const initialDisabled = formik.values.messageBody === formik.initialValues.messageBody;
 
-  const sendMessage = (e) => {
+  const sendMessage = (e) => { // отправляем сообщения на сервер
     e.preventDefault();
     socket.emit('newMessage', {
       body: message,
@@ -60,7 +53,7 @@ const FormMes = () => {
     setMessage('');
   };
   return (
-    <form onSubmit={sendMessage} noValidate="" className="py-1 border rounded-2">
+    <form noValidate="" className="py-1 border rounded-2" onSubmit={sendMessage}>
       <div className="input-group has-validation">
         <input
           name="body"

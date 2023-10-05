@@ -1,43 +1,37 @@
-import React, { useState } from 'react';
-
+import React, { useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import useAuth from '../locales/useAuth';
 import AuthContext from './AuthContext';
+import routes from '../route';
 
 const AuthProvider = ({ children }) => {
-  const getUser = () => JSON.parse(localStorage.getItem('user'));
+  const getUser = JSON.parse(localStorage.getItem('user'));
 
-  const [loggedIn, setLoggedIn] = useState(getUser());
+  const [token, setToken] = useState(getUser ?? null);
+  const navigate = useNavigate();
 
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    setLoggedIn(false);
-    localStorage.removeItem('user');
-  };
+  const logIn = useCallback((response) => {
+    const data = JSON.stringify(response.data);
+    localStorage.clear();
+    localStorage.setItem('userInfo', data);
+    setToken(data);
+    navigate('/');
+  }, [navigate]);
 
-  const getAuthHeader = () => {
-    if (loggedIn) {
-      return { Authorization: `Bearer ${loggedIn.token}` };
-    }
-    return {};
-  };
+  const logOut = useCallback(() => {
+    localStorage.removeItem('userInfo');
+    navigate(routes.logIn);
+  }, [navigate]);
 
-  const getUsername = () => {
-    if (loggedIn) {
-      return loggedIn.username;
-    }
-    return null;
-  };
+  const context = useMemo(() => ({
+    token,
+    setToken,
+    logOut,
+    logIn,
+  }), [token, setToken, logOut, logIn]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{
-      loggedIn,
-      logIn,
-      logOut,
-      getAuthHeader,
-      getUsername,
-    }}
-    >
+    <AuthContext.Provider value={context}>
       {children}
     </AuthContext.Provider>
   );
