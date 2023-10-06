@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import { useSelector } from 'react-redux';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { io } from 'socket.io-client';
+import { useTranslation } from 'react-i18next';
 import { actions as messageActions } from '../slise/messagesSlice'; // Импортируем
 import slices from '../slise/index';
 import FormMes from './FormMes';
@@ -17,7 +18,7 @@ const Messages = () => {
   const channelsId = useSelector((state) => state.channelsReducer.channelId);
   const messages = useSelector((state) => state.messageReducer.message);
 
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const currentChannelName = channels.find(({ id }) => id === currentChannelId);
 
@@ -29,16 +30,16 @@ const Messages = () => {
   const numberOfMessages = (number) => {
     number %= 100;
     if (number >= 5 && number <= 20) {
-      return 'сообщений';
+      return t('messages_many');
     }
     number %= 10;
     if (number === 1) {
-      return 'сообщение';
+      return t('messages_one');
     }
     if (number >= 2 && number <= 4) {
-      return 'сообщения';
+      return t('messages_several');
     }
-    return 'сообщений';
+    return t(' messages_Nol');
   };
   // отбираем сообщения по канала
   const chennaMessage = messages.filter((mes) => mes.channelId === channelsId);
@@ -52,6 +53,12 @@ const Messages = () => {
         {body}
       </div>
     );
+  });
+
+  // Создание фокуса на инпут сообщения
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
   });
 
   return (

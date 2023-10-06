@@ -18,7 +18,7 @@ const RenameChannel = ({ active, setActive, channelId }) => {
   const addModalSchema = yup.object().shape({
     modalName: yup.string().trim().min(3).max(20)
       .required()
-      .notOneOf(modalName, 'Должно быть уникальным'),
+      .notOneOf(modalName, t('mustUnique')),
   });
 
   const {

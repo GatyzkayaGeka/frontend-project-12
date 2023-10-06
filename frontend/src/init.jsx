@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider as StoreProvider } from 'react-redux';
+// import io from 'socket.io-client';
 import App from './components/App';
 import resources from './locales';
 import AuthProvider from './contex/AuthProvider';

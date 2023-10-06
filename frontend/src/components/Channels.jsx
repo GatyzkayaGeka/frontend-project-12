@@ -81,8 +81,8 @@ const Channels = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setChannelId(id); }}>Удалить</Dropdown.Item>
-            <Dropdown.Item href="#/action-2" onClick={() => { setRenameModalActive(true); setChannelId(id); }}>Переименовать</Dropdown.Item>
+            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setChannelId(id); }}>{t('delete')}</Dropdown.Item>
+            <Dropdown.Item href="#/action-2" onClick={() => { setRenameModalActive(true); setChannelId(id); }}>{t('rename')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </li>
@@ -100,7 +100,7 @@ const Channels = () => {
             onClick={() => setAddModalActive(true)}
           >
             <AddingChannel />
-            <span className="visually-hidden">+</span>
+            <span className="visually-hidden">{t('plus')}</span>
           </button>
         </div>
         <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
