@@ -6,12 +6,23 @@ import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { useFormik } from 'formik';
 import { io } from 'socket.io-client';
-import { addModalSchema } from '../schemas';
+import * as yup from 'yup';
+import { useSelector } from 'react-redux';
+// import { addModalSchema } from '../schemas';
 
 const socket = io();
 
 const AddChannelModal = ({ active, setActive }) => {
   const { t } = useTranslation();
+
+  const channels = useSelector((state) => state.channelReduser.channels);
+  const modalName = channels.map((i) => i.name);
+
+  const addModalSchema = yup.object().shape({
+    modalName: yup.string().trim().min(3).max(20)
+      .required()
+      .notOneOf(modalName, 'Должно быть уникальным'),
+  });
 
   const {
     values, errors, handleBlur, handleChange, handleSubmit,
