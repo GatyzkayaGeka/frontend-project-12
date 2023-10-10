@@ -6,6 +6,8 @@ import { io } from 'socket.io-client';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import cn from 'classnames';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { addModalSchema } from '../schemas';
 
 const socket = io();
@@ -14,6 +16,7 @@ const RenameChannel = ({ active, setActive, channelId }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReduser.channels);
   const modalName = channels.map((i) => i.name);
+  const notify = () => toast.success(t('channelRenamed'));
 
   const addModalSchema = yup.object().shape({
     modalName: yup.string().trim().min(3).max(20)
@@ -34,6 +37,7 @@ const RenameChannel = ({ active, setActive, channelId }) => {
       socket.emit('renameChannel', { id: channelId, name: values.modalName });
       setActive(!active);
       values.modalName = '';
+      notify();
     },
   });
 

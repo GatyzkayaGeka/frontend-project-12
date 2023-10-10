@@ -8,12 +8,15 @@ import { useFormik } from 'formik';
 import { io } from 'socket.io-client';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { addModalSchema } from '../schemas';
 
 const socket = io();
 
 const AddChannelModal = ({ active, setActive }) => {
   const { t } = useTranslation();
+  const notify = () => toast.success(t('channelCreated'));
 
   const channels = useSelector((state) => state.channelReduser.channels);
   const modalName = channels.map((i) => i.name);
@@ -37,6 +40,7 @@ const AddChannelModal = ({ active, setActive }) => {
       socket.emit('newChannel', { name: values.modalName });
       setActive(!active);
       values.modalName = '';
+      notify();
     },
   });
 

@@ -12,6 +12,7 @@ import Registration from './Registration';
 import AuthContext from '../contex/AuthContext';
 import store from '../slise';
 import ru from './locales/index';
+import 'react-toastify/dist/ReactToastify.css';
 
 // import AuthProvider from './AuthProvider';
 // import useAuth from '../locales/useAuth';

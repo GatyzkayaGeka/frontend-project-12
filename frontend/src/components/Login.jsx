@@ -7,15 +7,18 @@ import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import loginImg from '../imgs/login.jpeg';
 import { loginSchema } from '../schemas';
 import AuthContext from '../contex/AuthContext';
+import 'react-toastify/dist/ReactToastify.css';
 // import useAuth from '../locales/useAuth'; // Импортируем useAuth
 // import rout from '../route';
 
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const notify = () => toast.error(t('errorLoadingData'));
   // const location = useLocation();
   // const history = useHistory(); // Использовать useHistory для редиректа
   // const auth = useAuth(); // Получить контекст аутентификации
@@ -44,6 +47,9 @@ const Login = () => {
           console.log('Ghjdthznmmmm', data);
         })
         .catch((err) => {
+          if (err.message === 'Network Error') {
+            return notify();
+          }
           if (err.response.status === 401) {
             errors.password = t('submissionFailed');
             return setSubmitting(false);
