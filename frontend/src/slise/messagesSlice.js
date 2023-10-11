@@ -7,7 +7,7 @@ const initialState = {
 };
 
 const messageSlice = createSlice({
-  name: 'message',
+  name: 'messages',
   initialState,
   reducers: {
     setMessages(state, { payload }) {
@@ -19,8 +19,8 @@ const messageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(channelsActions.removeChannel, (state, actions) => {
-      const channaelId = actions.payload.id;
-      const rest = state.messages.filter((i) => i.channelId !== channaelId);
+      const channelId = actions.payload.id;
+      const rest = state.messages.filter((i) => i.channelId !== channelId);
       state.messages = rest;
     });
   },

@@ -1,22 +1,22 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import { useSelector } from 'react-redux';
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { io } from 'socket.io-client';
 import { useTranslation } from 'react-i18next';
-import { actions as messageActions } from '../slise/messagesSlice'; // Импортируем
+import { actions as messagesActions } from '../slise/messagesSlice'; // Импортируем
 import slices from '../slise/index';
 import FormMes from './FormMes';
 
 const socket = io();
 socket.on('newMessage', (payload) => {
-  slices.dispatch(messageActions.addMessage(payload));
+  slices.dispatch(messagesActions.addMessage(payload));
 });
 
 // eslint-disable-next-line arrow-body-style
 const Messages = () => {
   const channels = useSelector((state) => state.channelsReducer.channels);
   const channelsId = useSelector((state) => state.channelsReducer.channelId);
-  const messages = useSelector((state) => state.messageReducer.message);
+  const messages = useSelector((state) => state.messagesReducer.messages);
 
   const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -56,10 +56,10 @@ const Messages = () => {
   });
 
   // Создание фокуса на инпут сообщения
-  const inputRef = useRef(null);
-  useEffect(() => {
-    inputRef.current.focus();
-  });
+  // const inputRef = useRef(null);
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  // });
 
   return (
     <div className="col p-0 h-100">

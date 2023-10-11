@@ -5,27 +5,17 @@ import { Provider } from 'react-redux';
 import { useTranslation, initReactI18next } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import i18next from 'i18next';
-import NotFound from './NotFound';
-import Login from './Login';
-import Chat from './Chat';
-import Registration from './Registration';
-import AuthContext from '../contex/AuthContext';
-import store from '../slise';
-import ru from './locales/index';
-import 'react-toastify/dist/ReactToastify.css';
 
-// import AuthProvider from './AuthProvider';
-// import useAuth from '../locales/useAuth';
-// import rout from '../rout';
+import NotFound from './components/NotFound';
+import Login from './components/Login';
+import Chat from './components/Chat';
+import Registration from './components/Registration';
 
-// const PrivateRoute = ({ children }) => {
-//   const location = useLocation();
-//   const auth = useAuth();
+import AuthContext from './contex/AuthContext';
 
-//   return (
-//     auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
-//   );
-// };
+import store from './slise';
+// import ru from './locales/index';
+import resources from './locales';
 
 const AuProvider = ({ children }) => {
   const [token, setToken] = useState('');
@@ -42,7 +32,7 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: 'ru',
-    resources: { ru },
+    resources,
   });
 
 const App = () => {

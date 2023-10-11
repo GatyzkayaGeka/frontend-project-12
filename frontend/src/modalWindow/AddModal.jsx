@@ -18,7 +18,7 @@ const AddChannelModal = ({ active, setActive }) => {
   const { t } = useTranslation();
   const notify = () => toast.success(t('channelCreated'));
 
-  const channels = useSelector((state) => state.channelReduser.channels);
+  const channels = useSelector((state) => state.channelsReducer.channels);
   const modalName = channels.map((i) => i.name);
 
   const addModalSchema = yup.object().shape({
@@ -38,7 +38,7 @@ const AddChannelModal = ({ active, setActive }) => {
     errorToken: false,
     onSubmit: () => {
       socket.emit('newChannel', { name: values.modalName });
-      setActive(!active);
+      setActive(false);
       values.modalName = '';
       notify();
     },
@@ -53,10 +53,10 @@ const AddChannelModal = ({ active, setActive }) => {
   const showModal = () => {
     inputRef.current.focus();
   };
-
+  // onClick={() => setActive(false)}
   return (
-    <Modal show={active} centered onShow={showModal}>
-      <Modal.Header closeButton onClick={() => setActive(false)}>
+    <Modal show={active} centered onShow={showModal} onHide={() => setActive(false)}>
+      <Modal.Header closeButton>
         <Modal.Title>{t('addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>

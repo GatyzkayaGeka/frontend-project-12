@@ -1,47 +1,32 @@
 import { useTranslation } from 'react-i18next';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+
+const socket = io();
 
 const FormMes = () => {
   const { t } = useTranslation();
   const [message, setMessage] = useState('');
-  const channelsId = useSelector((state) => state.chatReducer.channelId);
+  const channelsId = useSelector((state) => state.channelsReducer.channelId);
 
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
-  // const { socket, newMessage } = useSocket();
-  // const auth = useAuth();
-  // const { currentChannelId } = useSelector((state) => state.channels);
   const dispatch = useDispatch();
 
   useEffect(() => {
     // eslint-disable-next-line no-shadow
-    socket.on('newMessage', (message) => {
-      dispatch(message(message));
+    socket.on('newMessage', (newMessage) => {
+      dispatch(messageActions.addMessage(newMessage));
     });
 
     return () => {
       socket.off('newMessage');
     };
   });
-
-  // const formik = useFormik({
-  //   initialValues: { messageBody: '' },
-  //   onSubmit: async ({ messageBody }) => {
-  //     await newMessage({
-  //       message: messageBody,
-  //       channelId: currentChannelId,
-  //       user: auth.getUsername(),
-  //     });
-  //     formik.resetForm();
-  //   },
-  //   validationSchema: messageSchema,
-  // });
-
-  // const initialDisabled = formik.values.messageBody === formik.initialValues.messageBody;
 
   const sendMessage = (e) => { // отправляем сообщения на сервер
     e.preventDefault();
@@ -63,11 +48,12 @@ const FormMes = () => {
           className="border-0 p-0 ps-2 form-control"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          ref={inputRef} // Использую ref для установки фокуса
         />
         <button
           type="submit"
           className="btn btn-group-vertical"
-          disabled=""
+          disabled={message.trim() === ''} // Заблокирую кнопку, если сообщение пустое
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
