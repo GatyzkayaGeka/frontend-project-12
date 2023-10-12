@@ -24,9 +24,6 @@ const rollbarConfig = new Rollbar({
   environment: 'testenv',
 });
 
-// record a generic message and send it to Rollbar
-rollbarConfig.log('Hello world!');
-
 const AuProvider = ({ children }) => {
   const [token, setToken] = useState('');
   const contValue = useMemo(() => ({ token, setToken }), [token, setToken]);
@@ -52,6 +49,12 @@ const App = () => {
     localStorage.removeItem('userInfo');
     navigate('/login');
   };
+
+  function TestError() {
+    const a = null;
+    return a.hello();
+  }
+
   return (
     <div className="h-100">
       <div className="h-100" id="chat">
@@ -63,6 +66,7 @@ const App = () => {
           </nav>
           <RollbalProvider config={rollbarConfig}>
             <ErrorBoundary>
+              <TestError />
               <Provider store={store}>
                 <AuProvider>
                   <Routes>
