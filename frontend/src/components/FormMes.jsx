@@ -7,15 +7,14 @@ const socket = io();
 
 const FormMes = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const channelsId = useSelector((state) => state.channelsReducer.channelId);
 
-  const inputRef = useRef();
+  const inputRef = useRef(); // фокус на импут
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // eslint-disable-next-line no-shadow

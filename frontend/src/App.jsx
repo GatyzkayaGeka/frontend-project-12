@@ -6,6 +6,8 @@ import { useTranslation, initReactI18next } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import i18next from 'i18next';
 
+import { Provider as RollbalProvider, ErrorBoundary } from '@rollbar/react'; // <-- Provider imports 'rollbar' for us
+import Rollbar from 'rollbar';
 import NotFound from './components/NotFound';
 import Login from './components/Login';
 import Chat from './components/Chat';
@@ -16,6 +18,14 @@ import AuthContext from './contex/AuthContext';
 import store from './slise';
 // import ru from './locales/index';
 import resources from './locales';
+
+const rollbarConfig = new Rollbar({
+  accessToken: '3ebdb515b4444722800d1ca0b9b1124b',
+  environment: 'testenv',
+});
+
+// record a generic message and send it to Rollbar
+rollbarConfig.log('Hello world!');
 
 const AuProvider = ({ children }) => {
   const [token, setToken] = useState('');
@@ -51,16 +61,20 @@ const App = () => {
             {localStorage.getItem('userInfo')
               ? <button onClick={() => logOut()} type="button" className="btn btn-primary">{t('goOut')}</button> : null}
           </nav>
-          <Provider store={store}>
-            <AuProvider>
-              <Routes>
-                <Route path="/" element={<Chat />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Registration />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </AuProvider>
-          </Provider>
+          <RollbalProvider config={rollbarConfig}>
+            <ErrorBoundary>
+              <Provider store={store}>
+                <AuProvider>
+                  <Routes>
+                    <Route path="/" element={<Chat />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Registration />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </AuProvider>
+              </Provider>
+            </ErrorBoundary>
+          </RollbalProvider>
         </div>
         <ToastContainer />
       </div>

@@ -6,7 +6,7 @@ const initialState = {
   messages: [],
 };
 
-const messageSlice = createSlice({
+const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
@@ -26,5 +26,5 @@ const messageSlice = createSlice({
   },
 });
 
-export const { actions } = messageSlice;
-export default messageSlice.reducer;
+export const { actions } = messagesSlice;
+export default messagesSlice.reducer;

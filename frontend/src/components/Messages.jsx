@@ -30,16 +30,16 @@ const Messages = () => {
   const numberOfMessages = (number) => {
     number %= 100;
     if (number >= 5 && number <= 20) {
-      return t('messages_many');
+      return t('messagesCounter.messages_many');
     }
     number %= 10;
     if (number === 1) {
-      return t('messages_one');
+      return t('messagesCounter.messages_one');
     }
     if (number >= 2 && number <= 4) {
-      return t('messages_several');
+      return t('messagesCounter.messages_several');
     }
-    return t(' messages_Nol');
+    return t('messagesCounter.messages_Nol');
   };
   // отбираем сообщения по канала
   const chennaMessage = messages.filter((mes) => mes.channelId === channelsId);
