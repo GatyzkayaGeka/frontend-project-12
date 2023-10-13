@@ -13,6 +13,7 @@ import slices from '../slise/index';
 import AddModal from '../modalWindow/AddModal';
 import RemoveChannel from '../modalWindow/RemoveChannel';
 import RenameChannel from '../modalWindow/RenameChannel';
+import '../assets/styles.css';
 
 const socket = io();
 socket.on('addChannel', (payload) => {
@@ -52,7 +53,7 @@ const Channels = () => {
       <li className="nav-item w-100" key={id}>
         <button
           type="button"
-          className={id === channelIdActiv ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+          className={id === channelIdActiv ? 'w-100 rounded-0 text-start btn btn-secondary truncate' : 'w-100 rounded-0 text-start btn truncate'}
           onClick={() => getChannelId(id)}
         >
           <span
@@ -67,7 +68,7 @@ const Channels = () => {
       <li className="nav-item w-100" key={id}>
         <Dropdown as={ButtonGroup} className="d-flex">
           <Button
-            variant={id === channelIdActiv ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+            variant={`w-100 rounded-0 text-start btn ${id === channelIdActiv ? 'btn-secondary' : ''} truncate`}
             onClick={() => getChannelId(id)}
             id="dropdown-split-basic"
             className="w-50"
@@ -94,9 +95,9 @@ const Channels = () => {
 
   return (
     <>
-      <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light flex-column h-100 d-flex">
-        <div className="d-flex justify-content-between mb-2 ps-4 pe-2 p-4">
-          <span>{t('channels')}</span>
+      <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+          <span className="bold-text">{t('channels')}</span>
           <button
             type="button"
             className="p-0 text-primary btn btn-group-vertical"

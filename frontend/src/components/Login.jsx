@@ -1,5 +1,7 @@
 // import { useNavigate, useLocation } from 'react-router-dom';
-import React, { useRef, useEffect, useContext } from 'react';
+import React, {
+  useRef, useEffect, useContext, useState,
+} from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
@@ -18,11 +20,8 @@ const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = () => toast.error(t('errorLoadingData'));
+  const [isLoading, setIsLoading] = useState(false);
 
-  // const location = useLocation();
-  // const history = useHistory(); // Использовать useHistory для редиректа
-  // const auth = useAuth(); // Получить контекст аутентификации
-  // const [authFailed] = useState(false);
   const { setToken } = useContext(AuthContext);
 
   // фокус
@@ -45,8 +44,8 @@ const Login = () => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      // setAuthFailed(false);
-      axios.post(rout.logIn(), { username: values.username, password: values.password })
+      setSubmitting(true);
+      axios.post(rout.loginPath(), { username: values.username, password: values.password })
         .then((response) => {
           const data = JSON.stringify(response.data);
           localStorage.clear();
@@ -64,20 +63,13 @@ const Login = () => {
             return setSubmitting(false);
           }
           return setSubmitting(false);
+        })
+        .finally(() => {
+          console.log('YES');
+          setIsLoading(false); // сброс isLoading в false после завершения запроса
         });
     },
   });
-
-  // const inputRef = useRef();
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (authFailed) {
-  //     inputRef.current.focus();
-  //   }
-  // }, [authFailed]);
 
   const errClass = cn(
     'form-control',
@@ -129,10 +121,11 @@ const Login = () => {
                   <Form.Control.Feedback type="invalid">{t('submissionFailed')}</Form.Control.Feedback>
                 </Form.Group>
                 <Button
-                  type="submit"
+                  disabled={isLoading}
+                  type="button"
                   ref={btnRef}
-                  variant="outline-primary"
-                  className="w-100 mb-3"
+                  className="w-100 mb-3 btn"
+                  onClick={handleSubmit}
                 >
                   {t('loginHeader')}
                 </Button>

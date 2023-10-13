@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import FormGroup from 'react-bootstrap/FormGroup';
+
 import { io } from 'socket.io-client';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -27,7 +29,7 @@ const RenameChannel = ({ active, setActive, channelId }) => {
   });
 
   const {
-    values, errors, handleBlur, handleChange, handleSubmit,
+    values, errors, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       modalName: '',
@@ -37,7 +39,7 @@ const RenameChannel = ({ active, setActive, channelId }) => {
     errorToken: false,
     onSubmit: () => {
       socket.emit('renameChannel', { id: channelId, name: values.modalName });
-      setActive(false);
+      setActive(!active);
       values.modalName = '';
       notify();
     },
@@ -59,7 +61,7 @@ const RenameChannel = ({ active, setActive, channelId }) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <FormGroup className="mb-3" controlId="formBasicEmail">
             <input
               ref={inputRef}
               name="modalName"
@@ -67,10 +69,9 @@ const RenameChannel = ({ active, setActive, channelId }) => {
               className={classError}
               value={values.modalName}
               onChange={handleChange}
-              onBlur={handleBlur}
             />
             <div className="invalid-feedback">{errors.modalName}</div>
-          </Form.Group>
+          </FormGroup>
           <div className="d-flex justify-content-end">
             <Button
               variant="secondary"

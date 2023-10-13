@@ -19,7 +19,7 @@ const FormMes = () => {
   useEffect(() => {
     // eslint-disable-next-line no-shadow
     socket.on('newMessage', (newMessage) => {
-      dispatch(messageActions.addMessage(newMessage));
+      dispatch(messagesActions.addMessage(newMessage));
     });
 
     return () => {
@@ -41,7 +41,7 @@ const FormMes = () => {
       <div className="input-group has-validation">
         <input
           name="body"
-          autoComplete="off"
+          // autoComplete="off"
           aria-label={t('messageNev')}
           placeholder={t('enterMessage')}
           className="border-0 p-0 ps-2 form-control"
@@ -52,7 +52,7 @@ const FormMes = () => {
         <button
           type="submit"
           className="btn btn-group-vertical"
-          disabled={message.trim() === ''} // Заблокирую кнопку, если сообщение пустое
+          disabled={!message} // Заблокирую кнопку, если сообщение пустое
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

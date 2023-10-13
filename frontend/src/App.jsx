@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import i18next from 'i18next';
 
 import { Provider as RollbalProvider, ErrorBoundary } from '@rollbar/react'; // <-- Provider imports 'rollbar' for us
-import Rollbar from 'rollbar';
+// import Rollbar from 'rollbar';
 import NotFound from './components/NotFound';
 import Login from './components/Login';
 import Chat from './components/Chat';
@@ -19,10 +19,10 @@ import store from './slise';
 // import ru from './locales/index';
 import resources from './locales';
 
-const rollbarConfig = new Rollbar({
+const rollbarConfig = {
   accessToken: '3ebdb515b4444722800d1ca0b9b1124b',
   environment: 'testenv',
-});
+};
 
 const AuProvider = ({ children }) => {
   const [token, setToken] = useState('');
@@ -45,15 +45,11 @@ i18next
 const App = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const logOut = () => {
     localStorage.removeItem('userInfo');
     navigate('/login');
   };
-
-  function TestError() {
-    const a = null;
-    return a.hello();
-  }
 
   return (
     <div className="h-100">
@@ -66,7 +62,6 @@ const App = () => {
           </nav>
           <RollbalProvider config={rollbarConfig}>
             <ErrorBoundary>
-              <TestError />
               <Provider store={store}>
                 <AuProvider>
                   <Routes>

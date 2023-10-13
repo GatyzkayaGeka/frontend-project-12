@@ -117,7 +117,6 @@ const Registration = () => {
                   <input
                     placeholder={t('passwordsMustMatch')}
                     name="confirmPassword"
-                    required=""
                     autoComplete="new-password"
                     type="password"
                     id="confirmPassword"

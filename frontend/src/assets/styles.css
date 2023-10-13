@@ -1,0 +1,28 @@
+/*
+сокращение названия канала с тремя точками
+*/
+.truncate { 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+/*
+"Каналы" жирным
+*/
+.bold-text {
+    font-weight: bold;
+  }
+
+/*
+центрирует дочерние элементы по вертикали внутри этого контейнера
+*/
+
+
+/*
+Устанавливает отступ справа (margin-right) для элементов с этим классом в размере 10 пикселей
+*/
+
+.btn-primary {
+    margin-right: 10px; 
+  }
