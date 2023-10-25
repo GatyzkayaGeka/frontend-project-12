@@ -1,8 +1,8 @@
+/* eslint-disable import/prefer-default-export */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../route';
 
-// eslint-disable-next-line import/prefer-default-export
 export const fetchDataThunk = createAsyncThunk(
   'fetchInitialData',
   async (headers, { rejectWithValue }) => {
