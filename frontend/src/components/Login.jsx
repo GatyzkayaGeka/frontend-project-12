@@ -1,40 +1,38 @@
-// import { useNavigate, useLocation } from 'react-router-dom';
 import React, {
-  useRef, useEffect, useContext, useState,
+  useRef, useEffect, useState,
 } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import cn from 'classnames';
 import loginImg from '../imgs/login.jpeg';
 import { loginSchema } from '../schemas';
-import AuthContext from '../contex/AuthContext';
+
 import 'react-toastify/dist/ReactToastify.css';
-// import useAuth from '../locales/useAuth'; // Импортируем useAuth
 import rout from '../route';
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const notify = () => toast.error(t('errorLoadingData'));
-  const [isLoading, setIsLoading] = useState(false);
+  const auth = useAuth();
 
-  const { setToken } = useContext(AuthContext);
+  const notifyNetwork = () => toast.error(t('errorLoadingData'));
+  const notifyServer = () => toast.error(t('serverError'));
+
+  const [error, setError] = useState('');
 
   // фокус
   const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
-  const btnRef = useRef(null);
 
   useEffect(() => {
     usernameRef.current.focus();
   }, []);
 
   const {
-    values, errors, handleChange, handleSubmit, setSubmitting,
+    values, errors, handleChange, handleSubmit, setSubmitting, isSubmitting,
   } = useFormik({
     initialValues: {
       username: '',
@@ -47,26 +45,23 @@ const Login = () => {
       setSubmitting(true);
       axios.post(rout.loginPath(), { username: values.username, password: values.password })
         .then((response) => {
-          const data = JSON.stringify(response.data);
-          localStorage.clear();
-          localStorage.setItem('userInfo', data);
-          navigate('/');
-          setToken(response.data);
-          console.log('Ghjdthznmmmm', data);
+          auth.logIn(response);
         })
         .catch((err) => {
           if (err.message === 'Network Error') {
-            return notify();
+            notifyNetwork();
           }
           if (err.response.status === 401) {
-            errors.password = t('submissionFailed');
-            return setSubmitting(false);
+            setError(t('submissionFailed'));
+            setSubmitting(false);
           }
-          return setSubmitting(false);
+          if (err.response.status === 500) {
+            notifyServer();
+          }
+          setSubmitting(false);
         })
         .finally(() => {
-          console.log('YES');
-          setIsLoading(false); // сброс isLoading в false после завершения запроса
+          setSubmitting(true); // сброс isLoading в false после завершения запроса
         });
     },
   });
@@ -75,7 +70,7 @@ const Login = () => {
     'form-control',
     {
       'form-control is-invalid':
-      (errors.password) || (errors.username),
+      (errors.password) || (errors.username) || error,
     },
   );
 
@@ -115,17 +110,14 @@ const Login = () => {
                     onChange={handleChange}
                     value={values.password}
                     className={errClass}
-                    ref={passwordRef}
                   />
                   <Form.Label htmlFor="password">{t('password')}</Form.Label>
                   <Form.Control.Feedback type="invalid">{t('submissionFailed')}</Form.Control.Feedback>
                 </Form.Group>
                 <Button
-                  disabled={isLoading}
-                  type="button"
-                  ref={btnRef}
-                  className="w-100 mb-3 btn"
-                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  type="submit"
+                  className="w-100 mb-3 btn-primary"
                 >
                   {t('loginHeader')}
                 </Button>
@@ -134,7 +126,7 @@ const Login = () => {
             <div className="card-footer p-4">
               <div className="text-center">
                 <span>{t('noAccountQM')}</span>
-                <a href="/signup">{t('registration')}</a>
+                <Link to={rout.signup}>{t('registration')}</Link>
               </div>
             </div>
           </div>

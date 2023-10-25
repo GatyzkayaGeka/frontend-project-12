@@ -1,6 +1,5 @@
 import { useContext } from 'react';
-// eslint-disable-next-line import/named
-import AuthContext from '../contex/AuthContext';
+import AuthContext from '../context/AuthContext';
 
 const useAuth = () => useContext(AuthContext);
 

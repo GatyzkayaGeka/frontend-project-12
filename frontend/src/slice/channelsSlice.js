@@ -1,5 +1,5 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-// import fetchData from '../components/fetchData';
 
 const initialState = {
   channels: [],
@@ -35,11 +35,6 @@ const channelsSlice = createSlice({
       state.channels = renew;
     },
   },
-  // extraReducers: (builder) => builder
-  //   .addCase(fetchData.fulfilled, (state, action) => {
-  //     state.channels = action.payload.channels;
-  //     state.currentChannelId = action.payload.currentChannelId;
-  //   }),
 });
 
 export const { actions } = channelsSlice;

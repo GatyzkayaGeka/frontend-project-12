@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import rout from '../route';
 
 import non from '../imgs/non.png';
 
@@ -12,7 +14,7 @@ const NotFound = () => {
       <h1 className="h4 text-muted">{t('notFound')}</h1>
       <p className="text-muted">
         {t('redirectTextBegin')}
-        <a href="/">{t('redirectTextEnd')}</a>
+        <Link to={rout.chat}>{t('redirectTextEnd')}</Link>
       </p>
     </div>
   );

@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import axios from 'axios';
+// import axios from 'axios';
 
-import Channels from './Channels';
-import Messages from './Messages';
-// import useAuth from '../locales/useAuth';
-import routes from '../route';
+import Channels from './chat/Channels';
+import Messages from './chat/Messages';
+// import useAuth from '../hooks/useAuth';
+// import route from '../route';
+import { fetchDataThunk } from './fetchDataThunk';
 
-import { actions as channelsActions } from '../slise/channelsSlice';
-import { actions as messagesActions } from '../slise/messagesSlice';
+import { actions as channelsActions } from '../slice/channelsSlice';
+import { actions as messagesActions } from '../slice/messagesSlice';
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -18,20 +19,51 @@ const Chat = () => {
   // const auth = useAuth();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(routes.dataPath(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } });
-      dispatch(channelsActions.setChannels(response.data.channels));
-      dispatch(messagesActions.setMessages(response.data.messages));
-    };
-    fetchData();
-  }, [dispatch]);
+    const fetchInitialData = async () => {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (!userInfo || !userInfo.token) {
+        navigate('/login');
+        return;
+      }
 
-  useEffect(() => {
-    // eslint-disable-next-line functional/no-conditional-statements
-    if (!localStorage.getItem('userInfo')) {
-      navigate('/login');
-    }
-  }, [navigate]);
+      try {
+        const headers = { Authorization: `Bearer ${userInfo.token}` };
+        const data = await dispatch(fetchDataThunk(headers));
+        dispatch(channelsActions.setChannels(data.channels));
+        dispatch(messagesActions.setMessages(data.messages));
+      } catch (error) {
+        console.error('ERROR', error);
+        if (error.code === 401) {
+          navigate('/login');
+        }
+      }
+    };
+
+    fetchInitialData();
+  }, [dispatch, navigate]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  // eslint-disable-next-line max-len
+  //     await axios.get(route.dataPath(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } })
+  //       .then((response) => {
+  //         dispatch(channelsActions.setChannels(response.data.channels));
+  //         dispatch(messagesActions.setMessages(response.data.messages));
+  //       }).catch((err) => {
+  //         console.log('ERROR', err);
+  //         if (err.response.status === 401) {
+  //           auth.logOut();
+  //         }
+  //       });
+  //   };
+  //   fetchData();
+  // }, [dispatch, auth]);
+
+  // useEffect(() => {
+  //   if (!localStorage.getItem('userInfo')) {
+  //     navigate('/login');
+  //   }
+  // }, [navigate]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

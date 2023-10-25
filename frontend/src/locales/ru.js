@@ -43,5 +43,11 @@ export default {
     moreCharacters: 'Не менее 6 символов',
     plus: '+',
     errorLoadingData: 'Ошибка в загрузке данных',
+    channelManagement: 'Управление каналом',
+    channelName: 'Имя канала',
+    noChannel: 'канал не найден',
+    networkError: 'Ошибка сети',
+    alreadyExists: 'Такой пользователь уже существует',
+    serverError: 'ошибка сервера',
   },
 };

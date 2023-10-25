@@ -1,6 +1,5 @@
 import { useContext } from 'react';
-// eslint-disable-next-line import/named
-import SocketContext from '../contex/SocketContext';
+import SocketContext from '../context/SocketContext';
 
 const useSocket = () => useContext(SocketContext);
 
