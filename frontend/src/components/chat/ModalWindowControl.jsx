@@ -11,7 +11,7 @@ const ModalWindowControl = ({ showModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const channels = useSelector((state) => state.channelsReducer.channels);
+  const channels = useSelector((state) => state.channelsReducer.channels) || [];
   const channelIdActiv = useSelector((state) => state.channelsReducer.channelId);
 
   // eslint-disable-next-line no-shadow

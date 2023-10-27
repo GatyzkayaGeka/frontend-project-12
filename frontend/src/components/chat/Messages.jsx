@@ -8,9 +8,9 @@ import FormMes from './FormMessage';
 import useSocket from '../../hooks/useSocket';
 
 const Messages = () => {
-  const channels = useSelector((state) => state.channelsReducer.channels);
+  const channels = useSelector((state) => state.channelsReducer.channels) || [];
   const channelsId = useSelector((state) => state.channelsReducer.channelId);
-  const messages = useSelector((state) => state.messagesReducer.messages);
+  const messages = useSelector((state) => state.messagesReducer.messages) || [];
   const [message, setMessage] = useState('');
 
   const { t } = useTranslation();

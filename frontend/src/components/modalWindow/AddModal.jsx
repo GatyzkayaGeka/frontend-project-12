@@ -22,7 +22,7 @@ const AddChannelModal = () => {
   const dispatch = useDispatch();
 
   const channels = useSelector((state) => state.channelsReducer.channels);
-  const modalName = channels.map((i) => i.name);
+  const modalName = channels ? channels.map((i) => i.name) : [];
   const onHide = () => dispatch(modalsActions.closeModal());
 
   const renameModalSchema = yup.object().shape({
