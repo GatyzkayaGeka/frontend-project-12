@@ -34,6 +34,9 @@ const channelsSlice = createSlice({
       });
       state.channels = renew;
     },
+    moveToChannel(state, { payload }) {
+      state.channelId = payload;
+    },
   },
 });
 

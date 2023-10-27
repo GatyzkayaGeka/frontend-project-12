@@ -9,7 +9,7 @@ import NotFound from './NotFound';
 import Login from './Login';
 import Chat from './Chat';
 import Registration from './Registration';
-import AuthNavbar from './pageHeader/Navbar';
+import AuthNavbar from './Navbar';
 import Modal from './Modal';
 
 import useAuth from '../hooks/useAuth';

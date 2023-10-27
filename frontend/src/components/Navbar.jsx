@@ -1,15 +1,16 @@
 import { Container, Navbar, Button } from 'react-bootstrap';
 import { Link, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 
-import route from '../../route';
+import route from '../route';
 
 const AuthButton = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  return auth.user && <Button className="btn-primary" onClick={auth.logOut}>{t('goOut')}</Button>;
+  return auth.logIn && <Button className="btn-primary" onClick={auth.logOut}>{t('goOut')}</Button>;
 };
 
 const AuthNavbar = () => {

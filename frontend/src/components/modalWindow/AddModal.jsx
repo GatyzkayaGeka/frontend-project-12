@@ -15,29 +15,28 @@ import { actions as channelsActions } from '../../slice/channelsSlice';
 import { actions as modalsActions } from '../../slice/modalsSlice';
 
 const AddChannelModal = () => {
-  const { t } = useTranslation();
-  const notify = () => toast.success(t('channelCreated'));
-
   const socketChat = useSocket();
   const dispatch = useDispatch();
+  const onHide = () => dispatch(modalsActions.closeModal());
+  const { t } = useTranslation();
 
   const channels = useSelector((state) => state.channelsReducer.channels);
-  const modalName = channels ? channels.map((i) => i.name) : [];
-  const onHide = () => dispatch(modalsActions.closeModal());
+  const channelName = channels ? channels.map((i) => i.name) : [];
+  const notify = () => toast.success(t('channelCreated'));
 
   const renameModalSchema = yup.object().shape({
-    modalName: yup.string().trim()
+    channelName: yup.string().trim()
       .min(3, t('numberCharacters'))
       .max(20, t('numberCharacters'))
       .required(t('obligatoryField'))
-      .notOneOf(modalName, t('mustUnique')),
+      .notOneOf(channelName, t('mustUnique')),
   });
 
   const {
     values, errors, handleChange, handleSubmit, setSubmitting, isSubmitting,
   } = useFormik({
     initialValues: {
-      modalName: '',
+      channelName: '',
     },
     validationSchema: renameModalSchema,
     validateOnChange: false,
@@ -47,8 +46,8 @@ const AddChannelModal = () => {
       socketChat.addChannel(values)
         .then((response) => {
           console.log(response.id);
-          dispatch(channelsActions.removeChannel(response.id));
-          values.modalName = '';
+          dispatch(channelsActions.moveToChannel(response.id));
+          values.channelName = '';
           notify();
           onHide();
         })
@@ -62,7 +61,7 @@ const AddChannelModal = () => {
   });
 
   const classError = cn('mb-2 form-control', {
-    'mb-2 form-control is-invalid': errors.modalName,
+    'mb-2 form-control is-invalid': errors.channelName,
   });
 
   const inputRef = useRef(null);
@@ -83,14 +82,14 @@ const AddChannelModal = () => {
             <Modal.Footer>
               <Form.Control
                 ref={inputRef}
-                name="modalName"
-                id="modalName"
+                name="channelName"
+                id="channelName"
                 className={classError}
-                value={values.modalName}
+                value={values.channelName}
                 onChange={handleChange}
               />
-              <Form.Label className="visually-hidden" htmlFor="modalName">{t('channelName')}</Form.Label>
-              <div className="invalid-feedback">{errors.modalName}</div>
+              <Form.Label className="visually-hidden" htmlFor="channelName">{t('channelName')}</Form.Label>
+              <div className="invalid-feedback">{errors.channelName}</div>
             </Modal.Footer>
           </Form.Group>
           <FormGroup className="d-flex justify-content-end m-3">

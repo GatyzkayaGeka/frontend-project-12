@@ -22,15 +22,15 @@ const RenameChannel = () => {
   const modalInfo = useSelector((state) => state.modalsReducer.setModalInfo);
   const channelId = modalInfo.item;
   const channels = useSelector((state) => state.channelsReducer.channels);
-  const modalName = channels.map((i) => i.name);
+  const channelName = channels.map((i) => i.name);
   const notify = () => toast.success(t('channelRenamed'));
 
   const renameModalSchema = yup.object().shape({
-    modalName: yup.string().trim()
+    channelName: yup.string().trim()
       .min(3, t('numberCharacters'))
       .max(20, t('numberCharacters'))
       .required(t('obligatoryField'))
-      .notOneOf(modalName, t('mustUnique')),
+      .notOneOf(channelName, t('mustUnique')),
   });
 
   const channelToRename = channels.find((i) => i.id === channelId);
@@ -38,7 +38,7 @@ const RenameChannel = () => {
     values, errors, handleChange, handleSubmit, setSubmitting, isSubmitting,
   } = useFormik({
     initialValues: {
-      modalName: channelToRename ? channelToRename.name : '',
+      channelName: channelToRename ? channelToRename.name : '',
     },
     validationSchema: renameModalSchema,
     validateOnChange: false,
@@ -60,7 +60,7 @@ const RenameChannel = () => {
   });
 
   const classError = cn('mb-2 form-control', {
-    'mb-2 form-control is-invalid': errors.modalName,
+    'mb-2 form-control is-invalid': errors.channelName,
   });
   const inputRef = useRef(null);
 
@@ -80,14 +80,14 @@ const RenameChannel = () => {
             <Modal.Footer>
               <Form.Control
                 ref={inputRef}
-                name="modalName"
-                id="modalName"
+                name="channelName"
+                id="channelName"
                 className={classError}
-                value={values.modalName}
+                value={values.channelName}
                 onChange={handleChange}
               />
-              <Form.Label className="visually-hidden" htmlFor="modalName">{t('channelName')}</Form.Label>
-              <div className="invalid-feedback">{errors.modalName}</div>
+              <Form.Label className="visually-hidden" htmlFor="channelName">{t('channelName')}</Form.Label>
+              <div className="invalid-feedback">{errors.channelName}</div>
             </Modal.Footer>
           </FormGroup>
           <FormGroup className="d-flex justify-content-end m-3">

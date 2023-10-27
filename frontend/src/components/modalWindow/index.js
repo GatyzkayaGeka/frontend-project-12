@@ -8,4 +8,4 @@ const modals = {
   delete: RemoveChannel,
 };
 
-export default (modalName) => modals[modalName];
+export default (channelName) => modals[channelName];
