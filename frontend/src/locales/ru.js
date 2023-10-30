@@ -24,7 +24,7 @@ export default {
     messagesCounter: {
       messages_Nol: ' сообщений',
       messages_one: ' сообщение',
-      messages_several: ' сообщения',
+      messages_few: ' сообщения',
       messages_many: ' сообщений',
     },
     userName: 'Имя пользователя',

@@ -76,42 +76,40 @@ const AddChannelModal = () => {
         <Modal.Title>{t('addChannel')}</Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Modal.Footer>
-              <Form.Control
-                ref={inputRef}
-                name="channelName"
-                id="channelName"
-                className={classError}
-                value={values.channelName}
-                onChange={handleChange}
-              />
-              <Form.Label className="visually-hidden" htmlFor="channelName">{t('channelName')}</Form.Label>
-              <div className="invalid-feedback">{errors.channelName}</div>
-            </Modal.Footer>
-          </Form.Group>
-          <FormGroup className="d-flex justify-content-end m-3">
-            <Button
-              variant="secondary"
-              type="button"
-              className="me-2"
-              onClick={() => onHide()}
-            >
-              {t('cancel')}
-            </Button>
-            <Button
-              className="btn-primary"
-              type="submit"
-              variant="primary"
-              disabled={isSubmitting}
-            >
-              {t('send')}
-            </Button>
-          </FormGroup>
-        </Form>
-      </Modal.Body>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Modal.Footer>
+            <Form.Control
+              ref={inputRef}
+              name="channelName"
+              id="channelName"
+              className={classError}
+              value={values.channelName}
+              onChange={handleChange}
+            />
+            <Form.Label className="visually-hidden" htmlFor="channelName">{t('channelName')}</Form.Label>
+            <div className="invalid-feedback">{errors.channelName}</div>
+          </Modal.Footer>
+        </Form.Group>
+        <FormGroup className="d-flex justify-content-end m-3">
+          <Button
+            variant="secondary"
+            type="button"
+            className="me-2"
+            onClick={() => onHide()}
+          >
+            {t('cancel')}
+          </Button>
+          <Button
+            className="btn-primary"
+            type="submit"
+            variant="primary"
+            disabled={isSubmitting}
+          >
+            {t('send')}
+          </Button>
+        </FormGroup>
+      </Form>
     </Modal>
   );
 };

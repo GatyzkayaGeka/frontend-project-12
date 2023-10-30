@@ -58,7 +58,7 @@ const Registration = () => {
             return notifyNetwork();
           }
           if (err.response.status === 409) {
-            errors.username = t('error.alreadyExists');
+            errors.username = t('alreadyExists');
             return setSubmitting(false);
           }
           if (err.response.status === 500) {

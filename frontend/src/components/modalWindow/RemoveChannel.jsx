@@ -29,8 +29,8 @@ const RemoveChannel = () => {
       setSubmitting(true);
       socketChat.removeChannel(channelId)
         .then(() => {
-          notify();
           onHide();
+          notify();
         })
         .catch((error) => {
           console.log('ERROR', error);
@@ -64,7 +64,6 @@ const RemoveChannel = () => {
             className="btn-primary"
             type="submit"
             variant="danger"
-            onClick={() => onHide()}
             ref={inputRef}
             disabled={isSubmitting}
           >
