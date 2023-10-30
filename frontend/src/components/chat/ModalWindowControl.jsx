@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
-import filter from 'leo-profanity';
+import filterWords from 'leo-profanity';
 import { actions as channelsActions } from '../../slice/channelsSlice';
 
 const ModalWindowControl = ({ showModal }) => {
@@ -47,7 +47,7 @@ const ModalWindowControl = ({ showModal }) => {
             className="w-50"
           >
             <span className="me-1">#</span>
-            {filter.clean(name)}
+            {filterWords.clean(name)}
           </Button>
           <Dropdown.Toggle
             variant={id === channelIdActive ? 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary' : 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn'}

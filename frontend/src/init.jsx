@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import React from 'react';
 import { io } from 'socket.io-client';
-import filter from 'leo-profanity';
+import filterWords from 'leo-profanity';
 import { BrowserRouter } from 'react-router-dom';
 import { initReactI18next } from 'react-i18next';
 import { Provider as RollbarProvider } from '@rollbar/react';
@@ -21,8 +21,9 @@ const init = async () => {
       fallbackLng: 'ru',
     });
 
+  filterWords.add(filterWords.getDictionary('ru'));
+
   const socket = io();
-  filter.loadDictionary('ru');
 
   socket.on('newChannel', (payload) => {
     slice.dispatch(channelsActions.addChannel(payload));
