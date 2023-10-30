@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState, useEffect, useRef } from 'react';
 
 import { Button, Form } from 'react-bootstrap';
+import filterWords from 'leo-profanity';
 import FormMes from './FormMessage';
 import useSocket from '../../hooks/useSocket';
 
@@ -46,7 +47,7 @@ const Messages = () => {
       <div className="text-break mb-2" key={id}>
         <b>{username}</b>
         :
-        {body}
+        {filterWords.clean(body)}
       </div>
     );
   });
