@@ -13,12 +13,14 @@ start-backend:
 deploy:
 	git push heroku main
 
-start:
+startas:
 	make start-backend & make start-frontend
 
 lint:
 	npx eslint .
 
-install-and-build-frontend:
-    make -C frontend install
-    make -C frontend build
+build:
+    npm run build --prefix frontend
+
+start:
+    start-server -s ./frontend/build	
