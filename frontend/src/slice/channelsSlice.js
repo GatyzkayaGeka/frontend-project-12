@@ -27,8 +27,7 @@ const channelsSlice = createSlice({
     renameChannel(state, { payload }) {
       const renew = state.channels.map((i) => {
         if (i.id === payload.id) {
-          i = payload;
-          return i;
+          return payload;
         }
         return i;
       });
