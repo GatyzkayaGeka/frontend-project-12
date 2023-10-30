@@ -13,4 +13,4 @@
 3. Запустите команду make start .
 
 ## Проект:
-Тут в конце ссылку вставить!!!!!
+https://frontend-project-12-ddl2.onrender.com

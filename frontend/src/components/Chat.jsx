@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -18,10 +17,6 @@ const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useAuth();
-
-  // if (!auth.token) {
-  //   return <Redirect to="/login" />;
-  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,35 +41,6 @@ const Chat = () => {
       navigate('/login');
     }
   }, [navigate]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(route.dataPath(), {
-  //         headers: { Authorization: `Bearer ${auth.token}` },
-  //       });
-
-  //       dispatch(channelsActions.setChannels(response.data.channels));
-  //       dispatch(messagesActions.setMessages(response.data.messages));
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //       if (error.response && error.response.status === 401) {
-  //         auth.logOut();
-  //         navigate(route.logIn);
-  //       }
-  //     }
-  //   };
-
-  //   const checkAuthAndFetchData = async () => {
-  //     if (!auth.token) {
-  //       navigate(route.logIn);
-  //     } else {
-  //       await fetchData();
-  //     }
-  //   };
-
-  //   checkAuthAndFetchData();
-  // }, [dispatch, auth, navigate]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

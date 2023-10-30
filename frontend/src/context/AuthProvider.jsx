@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import useAuth from '../locales/useAuth';
 import AuthContext from './AuthContext';
 import route from '../route';
 

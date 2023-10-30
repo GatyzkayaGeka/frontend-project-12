@@ -18,3 +18,7 @@ start:
 
 lint:
 	npx eslint .
+
+install-and-build-frontend:
+    make -C frontend install
+    make -C frontend build
