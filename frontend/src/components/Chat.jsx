@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -14,9 +15,13 @@ import { actions as channelsActions } from '../slice/channelsSlice';
 import { actions as messagesActions } from '../slice/messagesSlice';
 
 const Chat = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useAuth();
+
+  // if (!auth.token) {
+  //   return <Redirect to="/login" />;
+  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +40,12 @@ const Chat = () => {
     };
     fetchData();
   }, [dispatch, auth]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('userInfo')) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   // useEffect(() => {
   //   const fetchData = async () => {
