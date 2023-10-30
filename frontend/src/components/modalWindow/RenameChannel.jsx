@@ -20,7 +20,7 @@ const RenameChannel = () => {
   const dispatch = useDispatch();
   const onHide = () => dispatch(modalsActions.closeModal());
   const modalInfo = useSelector((state) => state.modalsReducer.setModalInfo);
-  const channelId = modalInfo.item;
+  const channelId = modalInfo.targetId;
   const channels = useSelector((state) => state.channelsReducer.channels);
   const channelName = channels.map((i) => i.name);
   const notify = () => toast.success(t('channelRenamed'));
